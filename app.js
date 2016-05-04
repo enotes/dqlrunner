@@ -2,34 +2,50 @@
 const $ = require('jquery');
 const exec = require('child_process').exec;
 const fs = require('fs');
+const configFile = __dirname + '/dqlrunner.json';
 
 const readConfig = (cb) => {
-  fs.readFile(__dirname + '/dqlrunner.json', 'utf8', (err, buffer) => {
-    if (err) {
-      return cb(err);
-    }
-    let config = {};
-    try {
-      config = JSON.parse(buffer.toString());
-    } catch (e) {
-      err = e;
-    }
-    cb(err, config);
-  });
+    fs.access(configFile, fs.F_OK, (err) => {
+        if (err) {
+          // file does not exist
+          return cb(null, {});
+        }
+    });
+    fs.readFile(configFile, 'utf8', (err, buffer) => {
+        if (err) {
+            return cb(err);
+        }
+        let config = {};
+        try {
+            config = JSON.parse(buffer.toString());
+        } catch (e) {
+            err = e;
+        }
+        cb(err, config);
+    });
+};
+
+const logError = (error) => {
+  let $error = $('#error');
+  $error.html(error.toString());
+};
+
+const updateButton = ($el, value) => {
+  $el.val(value);
 };
 
 $(() => {
-  const $dql = $('[name="dql"]'),
-    $cwd = $('[name="cwd"]'),
-    $opt = $('[name="opt"]'),
-    $loading = $('#loading'),
-    $output = $('#output');
+  const $dql = $('[name="dql"]');
+  const $cwd = $('[name="cwd"]');
+  const $opt = $('[name="opt"]');
+  const $output = $('#output');
+  const $submit = $('#submit');
 
   $('#query-form').on('submit', (e) => {
     e.preventDefault();
 
-    $loading.removeClass('hidden');
     $output.html('');
+    updateButton($submit, 'Loading...');
 
     const dql = $dql.val().trim();
     const cwd = $cwd.val() || __dirname;
@@ -46,15 +62,21 @@ $(() => {
     console.log(dql);
     console.log(cmd);
 
-    exec(cmd, {cwd: cwd}, (err, stdout, stderr) => {
-      $output.html(err ? err.toString() : stdout.toString());
-      $loading.addClass('hidden');
+    exec(cmd, { cwd: cwd }, (err, stdout, stderr) => {
+      if (err) {
+        logError(err);
+      } else if (stderr) {
+        logError(stderr);
+      } else {
+        $output.html(stdout.toString());
+      }
+      updateButton($submit, 'Query...');
     });
   });
 
-  readConfig(function (err, config) {
+  readConfig((err, config) => {
     if (err) {
-      console.info('Unable to load config: ' + err);
+      return logError(err);
     }
     $dql.val(config.dql || '');
     $cwd.val(config.cwd || '');

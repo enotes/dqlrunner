@@ -5,14 +5,19 @@
     <title>DQLRunner</title>
     <link type="text/css" rel="stylesheet" href="common.css" />
     <link type="text/css" rel="stylesheet" href="styles.css" />
+    <link type="text/css" rel="stylesheet" href="prism.css" />
   </head>
   <body>
     <header>
       <h1>DQLRunner</h1>
     </header>
 
-    <section>
-      <form id="query-form">
+    <section class="builder">
+      <form name="query-builder"
+            id="query-form"
+            class="query-builder"
+            action=""
+            method="POST">
 
         <fieldset>
           <h3><label for="cwd">Project Directory</label></h3>
@@ -21,6 +26,7 @@
                  id="cwd"
                  class="text-control"
                  value=""
+                 required
                  placeholder="(doctrine project path)" />
         </fieldset>
 
@@ -28,32 +34,38 @@
           <h3><label for="dql">DQL Query</label></h3>
           <textarea name="dql"
                     id="dql"
+                    required
                     class="text-control"></textarea>
         </fieldset>
 
         <fieldset>
           <h3><label for="opt">Doctrine Options</label></h3>
-          <input name="opt"
+          <input type="text"
+                 name="opt"
                  id="opt"
                  class="text-control"
                  placeholder="(doctrine options)"
                  value="" />
         </fieldset>
-        <input type="submit"
-               class="submit-action"
-               value="Query..." />
+        <fieldset>
+          <input type="submit"
+                 id="submit"
+                 class="submit-action"
+                 value="Query..." />
+        </fieldset>
       </form>
     </section>
 
-    <section>
-      <h3 id="loading"
-          class="hidden">Loading...</h3>
-      <pre id="output"></pre>
+    <section class="results">
+      <pre class="result">
+        <code id="output"
+              class="language-php output"></code>
+      </pre>
+      <pre id="error"
+           class="error"></pre>
     </section>
 
     <script src="app.js"></script>
-    <script>
-
-    </script>
+    <script src="prism.js"></script>
   </body>
 </html>
