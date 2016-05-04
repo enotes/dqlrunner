@@ -1,0 +1,49 @@
+#query-form, #output {
+    width: 90%;
+    margin: auto;
+}
+
+#query-form fieldset {
+    display: block;
+    margin: 0.5rem 0 0 0;
+    border: none;
+}
+
+.text-control {
+    font-family: monospace;
+    font-size: 1rem;
+    width: 100%;
+}
+
+[name="dql"] {
+    height: 6rem;
+}
+
+.submit-action {
+    font-size: 2rem;
+    margin-left: 0.5rem;
+}
+
+h3 {
+    padding: 0;
+    margin: 0;
+}
+
+.hidden {
+    display: none;
+}
+
+#output {
+    margin-top: 1rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+#loading {
+    text-align: center;
+    background-color: #F06E37;
+    color: #010410;
+    border-radius: 0.4rem;
+    padding: 0.2rem;
+    margin: 0.5rem 0;
+}
