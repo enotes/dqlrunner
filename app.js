@@ -71,6 +71,7 @@ $(() => {
         logError(stderr);
       } else {
         $output.html(stdout.toString());
+        window.Prism.highlightAll();
       }
       updateButton($submit, 'Query...');
     });
