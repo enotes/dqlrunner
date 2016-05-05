@@ -46,6 +46,10 @@ h3 {
     word-wrap: break-word;
 }
 
+.error {
+  overflow: auto;
+}
+
 .loading {
     text-align: center;
     background-color: #F06E37;

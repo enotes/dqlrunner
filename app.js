@@ -6,23 +6,23 @@ const configFile = __dirname + '/dqlrunner.json';
 
 const readConfig = (cb) => {
     fs.access(configFile, fs.F_OK, (err) => {
-        if (err) {
-          // file does not exist
-          return cb(null, {});
-        }
-    });
-    fs.readFile(configFile, 'utf8', (err, buffer) => {
-        if (err) {
-            return cb(err);
-        }
-        let config = {};
-        try {
-            config = JSON.parse(buffer.toString());
-        } catch (e) {
-            err = e;
-        }
-        cb(err, config);
-    });
+      if (err) {
+        // file does not exist
+        return cb(null, {});
+      }
+      fs.readFile(configFile, 'utf8', (err, buffer) => {
+          if (err) {
+              return cb(err);
+          }
+          let config = {};
+          try {
+              config = JSON.parse(buffer.toString());
+          } catch (e) {
+              err = e;
+          }
+          cb(err, config);
+      });
+  });
 };
 
 const logError = (error) => {
