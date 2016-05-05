@@ -40,11 +40,13 @@ $(() => {
   const $opt = $('[name="opt"]');
   const $output = $('#output');
   const $submit = $('#submit');
+  const $error = $('#error');
 
   $('#query-form').on('submit', (e) => {
     e.preventDefault();
 
     $output.html('');
+    $error.html('');
     updateButton($submit, 'Loading...');
 
     const dql = $dql.val().trim();
